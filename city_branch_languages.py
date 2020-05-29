@@ -192,7 +192,7 @@ def make_county_list_from_zipcode():
     for zipcode in get_mdos_building_zipcodes():
         county = search_for_county_with_zipcode(zipcode)
         if county == "":
-            county = "No county data available"
+            county = "Saginaw County"
         else:
             county_list.append(county)
     print(county_list)
