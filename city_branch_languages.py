@@ -8,7 +8,11 @@ import secrets # file that contains your API key
 MAPQUEST_KEY = secrets.CONSUMER_KEY
 RESOURCE_URL = "http://www.mapquestapi.com/search/v2/radius?"
 
+CACHE_FILENAME = "michigan_LEP_cache.json"
+CACHE_DICT = {}
+
 mdos_addresses_xlsx = "mdos-building-addresses.xlsx"
+lep_by_county_xlsx = "lep-by-county-michigan.xlsx"
 
 ############################
 
@@ -82,12 +86,18 @@ def make_request_with_cache(key, value):
 
 ################################################
 
-## xlsx experimenting
-# wb = Workbook()
-# ws = wb.active
-
 def import_workbook(filename):
-    '''
+    '''imports an excel workbook as a file python can work with.
+
+    params
+    ------
+    filename : str
+        string that points to .xlsx file
+
+    returns
+    -------
+    wb : object
+        excel workbook object
     '''
     wb = load_workbook(filename)
 
@@ -95,9 +105,9 @@ def import_workbook(filename):
 
 
 def get_mdos_building_zipcodes():
-    '''reads the mdos building address .xlsx file to extract zipcodes that can
+    '''reads the mdos-building-addresses.xlsx file and extracts zipcodes that can
     eventually be sent through the mapquest API in order to find out which county
-    each zipcode is in
+    each zipcode is in.
 
     params
     ------
@@ -105,7 +115,7 @@ def get_mdos_building_zipcodes():
 
     returns
     -------
-    list
+    zipcode_list : list
         list of zipcodes as they correspond to the row on the excel sheet. 
         e.g., C2 = 49221; C145 = 48202
     '''
@@ -132,7 +142,16 @@ def get_mdos_building_zipcodes():
     
 
 def search_for_county_with_zipcode(zipcode):
-    '''
+    '''searches a zipcode on the mapquest API and returns a corresponding county.
+
+    params
+    ------
+    zipcode : int
+
+    returns
+    -------
+    county : str
+        the county associated with the zipcode provided
     '''
     params = {
     "key" : MAPQUEST_KEY,
@@ -163,12 +182,9 @@ def make_county_list_from_zipcode():
         county = search_for_county_with_zipcode(zipcode)
         if county == "":
             print("No county")
-        print(county)
-        else:
-            county_list.append(county)
-    print(county_list)
 
 
 if __name__ == "__main__":
     # print(get_county_from_zipcode(49221))
-    make_county_list_from_zipcode()
+    print(import_workbook(mdos_addresses_xlsx))
+    # make_county_list_from_zipcode()
