@@ -170,12 +170,23 @@ def search_for_county_with_zipcode(zipcode):
     unique_key = RESOURCE_URL + connector.join(param_strings)
     response = requests.get(unique_key).json()
     county = response['origin']['adminArea4']
+    make_request_with_cache(zipcode, county)
 
     return county
 
 
 def make_county_list_from_zipcode():
-    '''
+    '''Uses the county/zipcode match from search_for_county_with_zipcode() to create a county list
+    that matches each MDOS building from the mdos-building-addresses.xlsx file.
+
+    params
+    ------
+    none
+
+    returns
+    -------
+    county_list : list
+        list of counties as they correspond to the mdos-building-addresses.xlsx rows.
     '''
     county_list = []
     for zipcode in get_mdos_building_zipcodes():
@@ -185,6 +196,5 @@ def make_county_list_from_zipcode():
 
 
 if __name__ == "__main__":
-    # print(get_county_from_zipcode(49221))
-    print(import_workbook(mdos_addresses_xlsx))
-    # make_county_list_from_zipcode()
+    CACHE_DICT = open_cache()
+    make_county_list_from_zipcode()
