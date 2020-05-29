@@ -4,7 +4,7 @@ import requests
 import json
 import secrets # file that contains your API key
 
-###### global vars #########
+###################### global vars ######################
 MAPQUEST_KEY = secrets.CONSUMER_KEY
 RESOURCE_URL = "http://www.mapquestapi.com/search/v2/radius?"
 
@@ -14,7 +14,9 @@ CACHE_DICT = {}
 mdos_addresses_xlsx = "mdos-building-addresses.xlsx"
 lep_by_county_xlsx = "lep-by-county-michigan.xlsx"
 
-############################
+county_list = []
+#########################################################
+
 
 ###################### caching ##########################
 def open_cache():
@@ -188,16 +190,42 @@ def make_county_list_from_zipcode():
     county_list : list
         list of counties as they correspond to the mdos-building-addresses.xlsx rows.
     '''
-    county_list = []
     for zipcode in get_mdos_building_zipcodes():
         county = search_for_county_with_zipcode(zipcode)
         if county == "":
             county = "Saginaw County"
         else:
             county_list.append(county)
-    print(county_list)
+
+    return county_list
+
+def add_counties_to_mdos_branches():
+    '''takes the county list and adds a new column of counties to be matched with the corresponding MDOS branch.
+
+    params
+    ------
+    none
+
+    returns
+    -------
+    mdos_building_addresses_with_county.xlsx : an excel file with counties that match MDOS locations
+    '''
+    branches = import_workbook(mdos_addresses_xlsx)
+    address_sheet = branches['Address']
+
+    empty_d_column_cells = address_sheet['D2':'D145']
+    address_sheet['D2'] = "woof"
+    print(address_sheet['D2'])
+    ## here we have empty cells we can add our county info to
+    for i in range(len(empty_d_column_cells)):
+        empty_d_column_cells.append([make_county_list_from_zipcode[i] for i in range(143)])
+        
+    # print(len(county_list))
 
 
 if __name__ == "__main__":
     CACHE_DICT = open_cache()
     make_county_list_from_zipcode()
+    add_counties_to_mdos_branches()
+
+
