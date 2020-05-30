@@ -76,10 +76,10 @@ def make_request_with_cache(key, value):
         list
 
     '''
-
     if key in CACHE_DICT.keys():
         print("Using cache")
         return CACHE_DICT[key]
+
     else:
         print("Fetching")
         CACHE_DICT[key] = value
@@ -200,8 +200,10 @@ def make_county_list_from_zipcode():
 
     return county_list
 
+
 def add_counties_to_mdos_branches():
     '''takes the county list and adds a new column of counties to be matched with the corresponding MDOS branch.
+    Saves an excel file with the updated column of counties.
 
     params
     ------
@@ -209,24 +211,90 @@ def add_counties_to_mdos_branches():
 
     returns
     -------
-    mdos_building_addresses_with_county.xlsx : an excel file with counties that match MDOS locations
+    none
+        mdos-building-addresses.xlsx : saves an excel file with counties that match MDOS locations
     '''
+
+    ## import our workbook
     branches = import_workbook(mdos_addresses_xlsx)
     address_sheet = branches['Address']
 
     county_column = address_sheet['D2':'D145']
-    print(f"COUNTY LIST LENGTH: {range(len(county_list))}")
-    print(f"COUNTY COLUMN LENGTH: {range(len(county_column))}")
+
+    ## this is where we update the spreadsheet based on county 
     for i in (range(len(county_column))):
         county_column[i][0].value = county_list[i]
-        print(county_column[i][0].value)
 
+    ## save our changes to the excel sheet
     branches.save("mdos-building-addresses.xlsx")
+
+
+def make_lep_by_county_dict():
+    '''Creates a dictionary of LEP info based on county.
+    We can eventually use this dictionary to add information to the MDOS branches excel sheet.
+
+    params
+    ------
+    none
+
+    returns
+    -------
+    lep_by_county_dict : dict
+        a dictionary where counties are the key and corresponding LEP info are the values.
+    '''
+    county_lep_dict = {}
+    lep_county_list = []
+    lep_language_list = []
+
+    ## importing excel workbook
+    lep_info = import_workbook(lep_by_county_xlsx)
+
+    ## open sheet from workbook
+    lep_by_county_sheet = lep_info['County']
+
+    ## make a county list (these will be keys of our dict)
+    lep_county_column = lep_by_county_sheet['A6':'A88']
+
+    for cell in lep_county_column:
+        lep_county_list.append(cell[0].value)
+
+    ## make a language list (these will be the counties' values)
+    lep_language_column = lep_by_county_sheet['D6':'D88']
+
+    for cell in lep_language_column:
+        if cell[0].value == " ":
+            cell[0].value = "No language reported"
+            lep_language_list.append(cell[0].value)
+        else:
+            lep_language_list.append(cell[0].value)
+
+    ## make the dict
+    for i in range(len(lep_county_list)):
+        county_lep_dict[lep_county_list[i]] = lep_language_list[i]
+
+    return county_lep_dict
+
+def add_county_lep_info_to_mdos_branches():
+    '''adds some LEP language data from the lep-by-county excel file to the 
+    MDOS-building-addresses excel file.
+
+    params
+    ------
+    none
+
+    returns
+    -------
+    none
+        mdos-building-addresses-with-lep-languages.xlsx : saves an excel file with counties that match MDOS locations
+    '''
+
+    
 
 
 if __name__ == "__main__":
     CACHE_DICT = open_cache()
-    make_county_list_from_zipcode()
-    add_counties_to_mdos_branches()
+    # make_county_list_from_zipcode()
+    # add_counties_to_mdos_branches()
+    make_lep_by_county_dict()
 
 
