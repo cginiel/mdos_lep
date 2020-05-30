@@ -15,6 +15,7 @@ mdos_addresses_xlsx = "mdos-building-addresses.xlsx"
 lep_by_county_xlsx = "lep-by-county-michigan.xlsx"
 
 county_list = []
+county_lep_dict = {}
 #########################################################
 
 
@@ -242,7 +243,6 @@ def make_lep_by_county_dict():
     lep_by_county_dict : dict
         a dictionary where counties are the key and corresponding LEP info are the values.
     '''
-    county_lep_dict = {}
     lep_county_list = []
     lep_language_list = []
 
@@ -287,8 +287,19 @@ def add_county_lep_info_to_mdos_branches():
     none
         mdos-building-addresses-with-lep-languages.xlsx : saves an excel file with counties that match MDOS locations
     '''
+    branches = import_workbook(mdos_addresses_xlsx)
+    address_sheet = branches['Address']
 
-    
+    for k,v in county_lep_dict.items():
+        print(k,v)
+
+    ## need to figure out how to loop through the mdos county list and add the language
+    ## info to that excel sheet
+
+    ## maybe make a dict out of the county_list and add those values to the spreadsheet?
+
+
+
 
 
 if __name__ == "__main__":
@@ -296,5 +307,6 @@ if __name__ == "__main__":
     # make_county_list_from_zipcode()
     # add_counties_to_mdos_branches()
     make_lep_by_county_dict()
+    add_county_lep_info_to_mdos_branches()
 
 
