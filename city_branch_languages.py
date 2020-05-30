@@ -194,6 +194,7 @@ def make_county_list_from_zipcode():
         county = search_for_county_with_zipcode(zipcode)
         if county == "":
             county = "Saginaw County"
+            county_list.append(county)
         else:
             county_list.append(county)
 
@@ -213,14 +214,14 @@ def add_counties_to_mdos_branches():
     branches = import_workbook(mdos_addresses_xlsx)
     address_sheet = branches['Address']
 
-    empty_d_column_cells = address_sheet['D2':'D145']
-    address_sheet['D2'] = "woof"
-    print(address_sheet['D2'])
-    ## here we have empty cells we can add our county info to
-    for i in range(len(empty_d_column_cells)):
-        empty_d_column_cells.append([make_county_list_from_zipcode[i] for i in range(143)])
-        
-    # print(len(county_list))
+    county_column = address_sheet['D2':'D145']
+    print(f"COUNTY LIST LENGTH: {range(len(county_list))}")
+    print(f"COUNTY COLUMN LENGTH: {range(len(county_column))}")
+    for i in (range(len(county_column))):
+        county_column[i][0].value = county_list[i]
+        print(county_column[i][0].value)
+
+    branches.save("mdos-building-addresses.xlsx")
 
 
 if __name__ == "__main__":
