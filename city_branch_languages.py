@@ -275,8 +275,8 @@ def make_lep_by_county_dict():
     return county_lep_dict
 
 def add_county_lep_info_to_mdos_branches():
-    '''adds some LEP language data from the lep-by-county excel file to the 
-    MDOS-building-addresses excel file.
+    '''adds LEP primary foreign languages from the lep-by-county excel file to the 
+    mdos-building-addresses excel file.
 
     params
     ------
@@ -285,18 +285,21 @@ def add_county_lep_info_to_mdos_branches():
     returns
     -------
     none
-        mdos-building-addresses-with-lep-languages.xlsx : saves an excel file with counties that match MDOS locations
+        mdos-building-addresses-with-county-and-primary-foreign-lang.xlsx : saves an excel file with counties that match MDOS locations
     '''
+    ## importing our excel sheet
     branches = import_workbook(mdos_addresses_xlsx)
     address_sheet = branches['Address']
 
-    for k,v in county_lep_dict.items():
-        print(k,v)
+    ## assign variable to the column to which we wish to apply our languages
+    language_column = address_sheet['E2':'E145']
 
-    ## need to figure out how to loop through the mdos county list and add the language
-    ## info to that excel sheet
+    ## match languages to their respective county
+    for i in range(len(county_list)):
+        if county_list[i] in county_lep_dict:
+            language_column[i][0].value = county_lep_dict[county_list[i]]
 
-    ## maybe make a dict out of the county_list and add those values to the spreadsheet?
+    branches.save("mdos-building-addresses-with-county-and-primary-foreign-lang.xlsx")
 
 
 
@@ -304,8 +307,8 @@ def add_county_lep_info_to_mdos_branches():
 
 if __name__ == "__main__":
     CACHE_DICT = open_cache()
-    # make_county_list_from_zipcode()
-    # add_counties_to_mdos_branches()
+    make_county_list_from_zipcode()
+    add_counties_to_mdos_branches()
     make_lep_by_county_dict()
     add_county_lep_info_to_mdos_branches()
 
