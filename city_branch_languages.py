@@ -205,7 +205,7 @@ def make_county_list_from_zipcode():
 
 
 def apply_column_header_styles(cell):
-    '''Applies a blue fill to a column header's cell
+    '''Applies a blue fill to a cell
 
     params
     ------
@@ -216,7 +216,7 @@ def apply_column_header_styles(cell):
     ------
     none
     '''
-    ## add header styles
+    ## add styles using ARGB code
     blueFill = PatternFill(
         start_color = 'FFB4C6E7',
         end_color = 'FFB4C6E7',
