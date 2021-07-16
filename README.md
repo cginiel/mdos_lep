@@ -1,4 +1,4 @@
-# Michigan Department of State Limited English Proficient Data Manipulation
+# Michigan Department of State Limited English Proficiency Data Manipulation
 
 ## Summary
 This was a project I implemented for the Michigan Department of State in a 48 hour timeframe.
