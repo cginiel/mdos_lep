@@ -19,7 +19,7 @@ so that visitors with limited english proficiency could more easily find help.
 4. Python is super useful and fun.
 
 ## Packages required to run this program
-```
+```python
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
