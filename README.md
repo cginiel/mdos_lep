@@ -13,10 +13,15 @@ The Secretary of State was able to use this document to provide all branches acr
 so that visitors with limited english proficiency could more easily find help.
 
 ### Things I learned from this project:
-1. You will never know everything you need to complete a new project.
+1. You likely won't know everything you need to in order to complete a new project.
 2. Knowing what you don't know and learning on the fly is key to success.
 3. Code can always be refactored and improved—this project is no exception.
 4. Python is super useful and fun.
+
+### Why Python?
+1. I had just completed a graduate-level intermediate course in Python and I wanted to apply my skills to a real world client project.
+2. This data cleaning and manipulating *could* have been done by hand, but what if the dataset was ten thousand rows instead of around one hundred? What if other states needed help with a similar issue? What if the SOS wanted to scale this project? The code is more adaptable.
+3. Python is extremely popular—another developer could take on this project once my work with MDOS was over.
 
 ## Packages required to run this program
 ```python
