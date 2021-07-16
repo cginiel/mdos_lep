@@ -15,7 +15,7 @@ so that visitors with limited english proficiency could more easily find help.
 ### Things I learned from this project:
 1. You will never know everything you need to complete a new project.
 2. Knowing what you don't know and learning on the fly is key to success.
-3. Code can always be refactored and improved--this project is no exception.
+3. Code can always be refactored and improved—this project is no exception.
 4. Python is super useful and fun.
 
 ## Packages required to run this program
