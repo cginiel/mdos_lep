@@ -7,7 +7,7 @@ The goal of the project was to consolidate information contained in two differen
 One spreadsheet contained the addresses of all Secretary of State branches in Michigan. The other spreadsheet contained the primary and secondary
 foreign languages spoken in each county in Michigan. I used the openpyxl package in combination with the mapquest API to associate SOS branch zipcodes
 with their respective counties. I then linked the primary and secondary foreign languages spoken in each Michigan county to their SOS branch(es) in one
-unified exel doc.
+unified excel doc.
 
 The Secretary of State was able to use this document to provide all branches across the state with documents written in those counties' primary foreign languages
 so that visitors with limited english proficiency could more easily find help.
